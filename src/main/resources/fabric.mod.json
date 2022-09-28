@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "entitylocator",
+  "version": "${version}",
+  "name": "Entitylocator",
+  "description": "A private mod made by circularsprojects that notifies you when the unrendered entity count is above 100.",
+  "authors": [
+    "circularsprojects"
+  ],
+  "contact": {
+    "website": "https://circularsprojects.com"
+  },
+  "license": "MIT",
+  "icon": "assets/entitylocator/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.circularsprojects.entitylocator.client.EntitylocatorClient"
+    ],
+    "main": [
+      "com.circularsprojects.entitylocator.Entitylocator"
+    ]
+  },
+  "mixins": [
+    "entitylocator.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  }
+}
