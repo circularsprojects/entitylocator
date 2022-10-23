@@ -28,6 +28,8 @@ public class EntitylocatorClient implements ClientModInitializer {
 }
 
 class getEntities extends TimerTask {
+    public boolean isRunning = false;
+
     //    private void addDebugMessage(Formatting formatting, Text text) {
 //        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.empty().append((Text)Text.translatable("debug.prefix").formatted(formatting, Formatting.BOLD)).append(" ").append(text));
 //    }
@@ -38,44 +40,43 @@ class getEntities extends TimerTask {
 //        this.debugLog(Text.translatable(key, args));
 //    }
     public void run() {
-        try {
+        if (isRunning) {
+            try {
 //            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable(MinecraftClient.getInstance().worldRenderer.getEntitiesDebugString()));
-            if (MinecraftClient.getInstance().world.getRegularEntityCount() >= 100) {
-                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected entity count above 100! Entity count: " + MinecraftClient.getInstance().world.getRegularEntityCount()));
+                if (MinecraftClient.getInstance().world.getRegularEntityCount() >= 100) {
+                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected entity count above 100! Entity count: " + MinecraftClient.getInstance().world.getRegularEntityCount()));
+                }
+            } catch (Exception e) {
+                if (e instanceof NullPointerException) {
+                    System.out.println("[ENTITYLOCATOR] Time loop #1 (entity count) is unable to function, likely as a world is not loaded.");
+                } else {
+                    System.out.println("[ENTITYLOCATOR] encountered an error in time loop! (entity count)");
+                    System.out.println(e);
+                }
             }
-        } catch (Exception e) {
-            if (e instanceof NullPointerException) {
-                System.out.println("[ENTITYLOCATOR] Time loop #1 (entity count) is unable to function, likely as a world is not loaded.");
-            } else {
-                System.out.println("[ENTITYLOCATOR] encountered an error in time loop! (entity count)");
-                System.out.println(e);
-            }
-        }
-        try {
-            ProfileResult profileResult = ((clientProfilerAccessor) MinecraftClient.getInstance()).getTickProfilerResult();
+            try {
+                ProfileResult profileResult = ((clientProfilerAccessor) MinecraftClient.getInstance()).getTickProfilerResult();
 
 //            if (MinecraftClient.getInstance().toggleDebugProfiler(this::debugLog)) {
 //                this.debugLog("debug.profiling.start", 10);
 //            } else {
 //                MinecraftClient.getInstance().toggleDebugProfiler(this::debugLog);
 //            }
-            for (ProfilerTiming profilerRes : profileResult.getTimings("root\u001Etick\u001Elevel\u001EblockEntities")) {
-                // detect chest, ender_chest, enchanting_table, shulker_box
-                switch (profilerRes.name) {
-                    case "minecraft:ender_chest" ->
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected ender chest!"));
-                    case "minecraft:enchanting_table" ->
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected enchanting table!"));
-                    case "minecraft:shulker_box" ->
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected shulker box!"));
+                for (ProfilerTiming profilerRes : profileResult.getTimings("root\u001Etick\u001Elevel\u001EblockEntities")) {
+                    // detect chest, ender_chest, enchanting_table, shulker_box
+                    switch (profilerRes.name) {
+                        case "minecraft:ender_chest" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected ender chest!"));
+                        case "minecraft:enchanting_table" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected enchanting table!"));
+                        case "minecraft:shulker_box" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected shulker box!"));
+                    }
                 }
-            }
-        } catch (Exception e) {
-            // check if the error is a java.lang.NullPointerException
-            if (e instanceof NullPointerException) {
-                System.out.println("[ENTITYLOCATOR] Time loop #2 (profiler) is unable to function because the profiler is not open.");
-            } else {
-                System.out.println("[ENTITYLOCATOR] encountered an error in time loop #2!");
+            } catch (Exception e) {
+                // check if the error is a java.lang.NullPointerException
+                if (e instanceof NullPointerException) {
+                    System.out.println("[ENTITYLOCATOR] Time loop #2 (profiler) is unable to function because the profiler is not open.");
+                } else {
+                    System.out.println("[ENTITYLOCATOR] encountered an error in time loop #2!");
+                }
             }
         }
     }
