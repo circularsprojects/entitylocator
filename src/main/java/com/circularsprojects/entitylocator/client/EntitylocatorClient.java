@@ -28,23 +28,16 @@ public class EntitylocatorClient implements ClientModInitializer {
 }
 
 class getEntities extends TimerTask {
-    public boolean isRunning = false;
+    public static boolean isRunning = false;
 
-    //    private void addDebugMessage(Formatting formatting, Text text) {
-//        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.empty().append((Text)Text.translatable("debug.prefix").formatted(formatting, Formatting.BOLD)).append(" ").append(text));
-//    }
-//    private void debugLog(Text text) {
-//        this.addDebugMessage(Formatting.YELLOW, text);
-//    }
-//    private void debugLog(String key, Object... args) {
-//        this.debugLog(Text.translatable(key, args));
-//    }
+    public static void startRunning() {isRunning = true;}
+    public static void stopRunning() {isRunning = false;}
     public void run() {
         if (isRunning) {
             try {
 //            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable(MinecraftClient.getInstance().worldRenderer.getEntitiesDebugString()));
                 if (MinecraftClient.getInstance().world.getRegularEntityCount() >= 100) {
-                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected entity count above 100! Entity count: " + MinecraftClient.getInstance().world.getRegularEntityCount()));
+                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("§8[§bEntityLocator§8] §eDetected entity count above 100! Entity count: " + MinecraftClient.getInstance().world.getRegularEntityCount()));
                 }
             } catch (Exception e) {
                 if (e instanceof NullPointerException) {
@@ -63,11 +56,11 @@ class getEntities extends TimerTask {
 //                MinecraftClient.getInstance().toggleDebugProfiler(this::debugLog);
 //            }
                 for (ProfilerTiming profilerRes : profileResult.getTimings("root\u001Etick\u001Elevel\u001EblockEntities")) {
-                    // detect chest, ender_chest, enchanting_table, shulker_box
+                    // detect ender_chest, enchanting_table, shulker_box
                     switch (profilerRes.name) {
-                        case "minecraft:ender_chest" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected ender chest!"));
-                        case "minecraft:enchanting_table" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected enchanting table!"));
-                        case "minecraft:shulker_box" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("Detected shulker box!"));
+                        case "minecraft:ender_chest" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("§8[§bEntityLocator§8] §eDetected ender chest!"));
+                        case "minecraft:enchanting_table" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("§8[§bEntityLocator§8] §eDetected enchanting table!"));
+                        case "minecraft:shulker_box" -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("§8[§bEntityLocator§8] §eDetected shulker box!"));
                     }
                 }
             } catch (Exception e) {

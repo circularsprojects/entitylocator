@@ -3,7 +3,7 @@
   "id": "entitylocator",
   "version": "${version}",
   "name": "Entitylocator",
-  "description": "A private mod made by circularsprojects that notifies you when the unrendered entity count is above 100.",
+  "description": "A mod made by circularsprojects that notifies you when the unrendered entity count is above 100.",
   "authors": [
     "circularsprojects"
   ],
