@@ -29,15 +29,17 @@ public class EntitylocatorClient implements ClientModInitializer {
 
 class getEntities extends TimerTask {
     public static boolean isRunning = false;
+    public static int entityThreshold = 100;
 
     public static void startRunning() {isRunning = true;}
     public static void stopRunning() {isRunning = false;}
+    public static void setThreshold(int threshold) {entityThreshold = threshold;}
     public void run() {
         if (isRunning) {
             try {
 //            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable(MinecraftClient.getInstance().worldRenderer.getEntitiesDebugString()));
-                if (MinecraftClient.getInstance().world.getRegularEntityCount() >= 100) {
-                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("§8[§bEntityLocator§8] §eDetected entity count above 100! Entity count: " + MinecraftClient.getInstance().world.getRegularEntityCount()));
+                if (MinecraftClient.getInstance().world.getRegularEntityCount() >= entityThreshold) {
+                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("§8[§bEntityLocator§8] §eDetected entity count above "+entityThreshold+"! Entity count: " + MinecraftClient.getInstance().world.getRegularEntityCount()));
                 }
             } catch (Exception e) {
                 if (e instanceof NullPointerException) {

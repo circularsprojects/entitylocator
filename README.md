@@ -4,8 +4,9 @@ Entitylocator is a simple mod designed to make it easier to find minecraft bases
 
 You can find the latest development build in `Actions -> Latest workflow run -> Artifacts -> entitylocator-dev`
 ## How to use
-You can enable or disable the mod by typing in ;;start or ;;stop in chat.\
-Other messages containing ;; (e.g. ;;help) will not be handled and will just be sent as a regular chat message.
+You can enable or disable the mod by typing in `;;start` or `;;stop` in chat.\
+You can also change the threshold by typing in `;;entitythreshold [number]` in chat.\
+Other messages containing ;; will not be handled and will just be sent as a regular chat message.
 
 You can also check for ender chests, enchanting tables and shulker boxes by having the F3 pie chart menu open (F3+shift) while the mod is active (haven't made it able to check it without the pie chart open yet)
 ## Current features:
